@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>697 首程控股 Algo Trader 計劃書</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --red: #f87171;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 20px;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 50px 20px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.8rem; color: var(--accent); margin-bottom: 10px; }
+  .hero .subtitle { font-size: 1.3rem; color: var(--text2); }
+  .hero .meta { margin-top: 15px; font-size: 1rem; color: #64748b; }
+
+  /* SECTIONS */
+  .section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 35px 30px;
+    margin: 30px 0;
+    border: 1px solid #334155;
+  }
+  .section h2 {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #334155;
+  }
+  .section h3 {
+    font-size: 1.3rem;
+    color: var(--accent2);
+    margin: 25px 0 12px 0;
+  }
+  .section p { margin: 12px 0; color: var(--text2); }
+  .section ul, .section ol { margin: 10px 0 10px 25px; }
+  .section li { margin: 8px 0; color: var(--text2); }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+  }
+  th { background: #1a2332; color: var(--accent); font-weight: 600; white-space: nowrap; }
+  td { color: var(--text2); }
+  tr:hover td { background: #1e2a3a; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .badge-green { background: #14532d; color: var(--green); }
+  .badge-blue { background: #1e3a5f; color: var(--accent); }
+  .badge-orange { background: #5c3d1a; color: var(--orange); }
+  .badge-purple { background: #3b1f5c; color: var(--accent2); }
+  .badge-red { background: #5c1a1a; color: var(--red); }
+
+  /* PHASE CARDS */
+  .phase-grid { display: grid; gap: 20px; margin: 20px 0; }
+  .phase-card {
+    background: #1a2332;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+  }
+  .phase-card .phase-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .phase-card .phase-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; }
+  .phase-card .phase-desc { color: var(--text2); font-size: 0.95rem; }
+  .phase-card .phase-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .phase-done { background: #14532d; color: var(--green); }
+  .phase-now { background: #5c3d1a; color: var(--orange); border: 1px solid var(--orange); }
+  .phase-next { background: #1e3a5f; color: var(--accent); }
+  .phase-later { background: #2d1a4e; color: var(--accent2); }
+
+  /* COMPONENT GRID */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin: 20px 0; }
+  .comp-card {
+    background: #1a2332;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .comp-card h4 { color: var(--accent); font-size: 1.1rem; margin-bottom: 8px; }
+  .comp-card p { color: var(--text2); font-size: 0.9rem; }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: linear-gradient(135deg, #1a3a5c, #1e293b);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .highlight strong { color: var(--accent); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 30px; margin: 20px 0; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #334155;
+  }
+  .timeline-item { position: relative; padding: 15px 0 15px 20px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 20px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .timeline-item .date { font-size: 0.85rem; color: var(--text2); }
+  .timeline-item .title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+  .timeline-item .desc { font-size: 0.9rem; color: var(--text2); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #475569;
+    font-size: 0.9rem;
+    border-top: 1px solid #1e293b;
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 18px; }
+    .hero h1 { font-size: 2rem; }
+    .section { padding: 25px 18px; }
+    .comp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 697 首程控股 Algo Trader 計劃書</h1>
+  <div class="subtitle">自動化交易程式 — 從 CCASS 數據到實盤交易</div>
+  <div class="meta">由 無虛 (mvmv) 製作 · 2026-07-14 · 與 Ming 協作開發</div>
+</div>
+
+<div class="container">
+
+<!-- ===== 1. OVERVIEW ===== -->
+<div class="section">
+  <h2>📌 計劃概述</h2>
+  <p>呢個計劃嘅目標係建立一個 <strong>完整嘅 697 自動化交易系統</strong>，用 CCASS 數據做基礎，逐步發展到即時逐筆成交數據嘅 algo trade。</p>
+
+  <div class="highlight">
+    <strong>🎯 核心目標：</strong><br>
+    ✅ 先用 CCASS 每日券商持倉變動數據做 <strong>模擬測試</strong><br>
+    ✅ Ming 提出交易策略 → mvmv 寫 code 測試<br>
+    ✅ 逐步加入價格數據（每分鐘 K 線）做進階模擬<br>
+    ✅ 最終：即時 tick data + 自動落盤<br>
+    <br>
+    <strong>💡 策略來源：</strong>Ming 你話「我協助想一個交易策略」，我負責寫 code 同執行測試 🫡
+  </div>
+</div>
+
+<!-- ===== 2. SYSTEM ARCHITECTURE ===== -->
+<div class="section">
+  <h2>🏗️ 系統架構</h2>
+  <p>成個系統分為 5 大模塊，模塊之間獨立運作，逐個開發：</p>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h4>📥 ① 數據採集層</h4>
+      <p>CCASS scraper（✅ 已做）<br>yfinance 每分鐘 K 線（✅ 已做）<br>→ 將來：IB/富途 tick data</p>
+    </div>
+    <div class="comp-card">
+      <h4>🗄️ ② 數據儲存層</h4>
+      <p>CSV 檔案 hoarding<br>→ SQLite 數據庫<br>→ 將來：時間序列 DB</p>
+    </div>
+    <div class="comp-card">
+      <h4>🧪 ③ 策略模擬層</h4>
+      <p>Backtest engine<br>→ CCASS 信號模擬<br>→ 每分鐘 K 線回測<br>→ 將來：tick-by-tick 回測</p>
+    </div>
+    <div class="comp-card">
+      <h4>📊 ④ 分析報告層</h4>
+      <p>HTML 報告生成<br>→ 策略績效分析<br>→ 風險指標計算</p>
+    </div>
+    <div class="comp-card">
+      <h4>⚡ ⑤ 執行層</h4>
+      <p>（將來）<br>→ Paper trading<br>→ 實盤落盤<br>→ 風險控制</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. DATA SOURCES ===== -->
+<div class="section">
+  <h2>📊 數據來源策略</h2>
+
+  <table>
+    <tr><th>數據</th><th>來源</th><th>狀態</th><th>用途</th></tr>
+    <tr>
+      <td>🏛️ 每日券商持倉</td>
+      <td>HKEX CCASS</td>
+      <td><span class="badge badge-green">✅ 已做</span></td>
+      <td>分析大戶動向、莊家收貨/散貨</td>
+    </tr>
+    <tr>
+      <td>⏱️ 每分鐘 K 線</td>
+      <td>yfinance</td>
+      <td><span class="badge badge-green">✅ 已做</span></td>
+      <td>開高低收量，基礎價格分析</td>
+    </tr>
+    <tr>
+      <td>📈 每日收市價</td>
+      <td>yfinance</td>
+      <td><span class="badge badge-green">✅ 已做</span></td>
+      <td>長期價格趨勢</td>
+    </tr>
+    <tr>
+      <td>📰 新聞消息</td>
+      <td>Google News</td>
+      <td><span class="badge badge-blue">🔄 進行中</span></td>
+      <td>697 + 汶萊沉香相關新聞</td>
+    </tr>
+    <tr>
+      <td>⚡ 逐筆成交（Tick）</td>
+      <td>IB / 富途 / AllTick</td>
+      <td><span class="badge badge-orange">⏳ 等開戶</span></td>
+      <td>精準策略執行、algo trade 必備</td>
+    </tr>
+  </table>
+
+  <div class="highlight" style="border-left-color: var(--orange);">
+    <strong>⚠️ 注意：</strong><br>
+    <strong>Phase 1（CCASS 模擬階段）</strong> — 只用 CCASS + 每日收市價 已經可以開始測試策略！<br>
+    <strong>Phase 2（每分鐘 K 線）</strong> — 用 yfinance 每分鐘 data 做更精細回測<br>
+    <strong>Phase 3（真正 Tick）</strong> — 等你開 IB / 富途戶口先有
+  </div>
+</div>
+
+<!-- ===== 4. PHASED ROADMAP ===== -->
+<div class="section">
+  <h2>🗺️ 分階段開發路線圖</h2>
+
+  <div class="phase-grid">
+
+    <div class="phase-card" style="border-color: var(--green);">
+      <div class="phase-status phase-done">✅ 已完成</div>
+      <div class="phase-num" style="color: var(--green);">Phase 0</div>
+      <div class="phase-title">基礎建設</div>
+      <div class="phase-desc">
+        ✔️ CCASS scraper 每日自動收集 697 券商持倉<br>
+        ✔️ 每分鐘 K 線自動記錄（每小時 cron）<br>
+        ✔️ 697 股價 ±$0.05 波動通知<br>
+        ✔️ 每日 CCASS 變動報告<br>
+        ✔️ 每日開市前新聞摘要
+      </div>
+    </div>
+
+    <div class="phase-card" style="border-color: var(--orange);">
+      <div class="phase-status phase-now">🔴 進行中</div>
+      <div class="phase-num" style="color: var(--orange);">Phase 1</div>
+      <div class="phase-title">策略開發 + CCASS 模擬</div>
+      <div class="phase-desc">
+        🎯 <strong>重點：</strong>你諗策略，我寫 code<br><br>
+        <strong>要做嘅嘢：</strong><br>
+        1️⃣ 你提出交易策略（例如：CCASS 券商連續 3 日吸貨就買入）<br>
+        2️⃣ mvmv 寫 backtesting code 測試<br>
+        3️⃣ 用 CCASS 歷史數據模擬交易<br>
+        4️⃣ 出績效報告（勝率、回報、最大回撤）<br><br>
+        <strong>可考慮嘅策略方向：</strong><br>
+        • 🟢 大戶吸貨追蹤 — 特定券商持倉增加信號<br>
+        • 🔴 大戶散貨預警 — 持倉減少，跟出貨<br>
+        • 📊 券商集中度 — Top 10 券商持倉佔比變化<br>
+        • 🔄 轉倉分析 — 券商之間轉移，可能代表換莊
+      </div>
+    </div>
+
+    <div class="phase-card" style="border-color: var(--accent);">
+      <div class="phase-status phase-next">⏳ 下一步</div>
+      <div class="phase-num" style="color: var(--accent);">Phase 2</div>
+      <div class="phase-title">K 線 + CCASS 聯合回測</div>
+      <div class="phase-desc">
+        📊 將 CCASS 信號 + 每分鐘 K 線價格數據結合<br>
+        📊 買賣時機優化（唔係每日收市先 trade）<br>
+        📊 加入滑點（slippage）同手續費模擬<br>
+        📊 多策略比較 dashboard
+      </div>
+    </div>
+
+    <div class="phase-card" style="border-color: var(--accent2);">
+      <div class="phase-status phase-later">🔮 未來</div>
+      <div class="phase-num" style="color: var(--accent2);">Phase 3</div>
+      <div class="phase-title">Paper Trading → 實盤</div>
+      <div class="phase-desc">
+        ⚡ 接入即時 tick data（需 IB/富途戶口）<br>
+        ⚡ 模擬落盤測試（paper trading）<br>
+        ⚡ 風險控制系統<br>
+        ⚡ 實盤自動化交易
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 5. TECH STACK ===== -->
+<div class="section">
+  <h2>🛠️ 技術棧</h2>
+
+  <table>
+    <tr><th>範疇</th><th>工具</th><th>用途</th></tr>
+    <tr><td>語言</td><td>Python 3</td><td>主力開發語言</td></tr>
+    <tr><td>數據處理</td><td>pandas / numpy</td><td>數據分析、轉換、統計</td></tr>
+    <tr><td>數據儲存</td><td>CSV → SQLite</td><td>逐步升級儲存方案</td></tr>
+    <tr><td>回測框架</td><td>backtrader 或自建</td><td>策略回測模擬</td></tr>
+    <tr><td>CCASS 數據</td><td>自建 scraper</td><td>✅ 已用緊</td></tr>
+    <tr><td>股價數據</td><td>yfinance</td><td>✅ 已用緊</td></tr>
+    <tr><td>報表生成</td><td>HTML + 圖表</td><td>自動出報告俾你睇</td></tr>
+    <tr><td>自動化執行</td><td>Hermes cron</td><td>排程自動運行</td></tr>
+    <tr><td>（將來）實盤交易</td><td>IB API 或 富途 API</td><td>直接落盤</td></tr>
+  </table>
+</div>
+
+<!-- ===== 6. CCASS STRATEGY IDEAS ===== -->
+<div class="section">
+  <h2>💡 CCASS 策略點子（俾你參考）</h2>
+  <p>以下係一啲你可以考慮嘅策略方向，你揀一個或者改你嘅想法：</p>
+
+  <table>
+    <tr><th>#</th><th>策略名稱</th><th>信號</th><th>風險</th></tr>
+    <tr>
+      <td>1</td>
+      <td><strong>大戶連續吸貨</strong></td>
+      <td>某券商連續 3 日增持 > 10 萬股 → 買入；連續 3 日減持 → 賣出</td>
+      <td>🟢 低</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Top 3 集中度</strong></td>
+      <td>前 3 大券商持倉佔比上升 → 買入；下降 → 賣出</td>
+      <td>🟢 低</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>新券商進場</strong></td>
+      <td>有券商持倉由 0 變正數 → 買入信號</td>
+      <td>🟡 中</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>券商轉倉套利</strong></td>
+      <td>A 券商減持 + B 券商增持相同數量 → 可能換莊，跟 B 方向</td>
+      <td>🟡 中</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>CCASS + 價格背離</strong></td>
+      <td>股價跌但 CCASS 大戶增持 → 買入（大戶收貨）</td>
+      <td>🟢 低</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>散戶指標</strong></td>
+      <td>小型券商數量增加（散戶進場）→ 賣出</td>
+      <td>🔴 高</td>
+    </tr>
+  </table>
+
+  <div class="highlight">
+    <strong>💬 Ming，下一步係咁：</strong><br>
+    你睇完呢啲策略方向，話俾我知你想試邊個（或者你心裡面有其他想法），我即刻寫 code 做 Backtest，用 CCASS 歷史數據跑一次，出份績效報告俾你睇結果 📊
+  </div>
+</div>
+
+<!-- ===== 7. HOW BACKTEST WORKS ===== -->
+<div class="section">
+  <h2>🔬 CCASS Backtest 係點運作？</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">Step 1</div>
+      <div class="title">收集歷史 CCASS 數據</div>
+      <div class="desc">每日 scrape 697 嘅券商持倉，儲起曬（已自動進行中）</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">Step 2</div>
+      <div class="title">定義策略規則</div>
+      <div class="desc">你話俾我知「當 X 發生就買入，當 Y 發生就賣出」</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">Step 3</div>
+      <div class="title">跑 Backtest Engine</div>
+      <div class="desc">每日模擬交易：根據 CCASS 信號決定買/賣/唔郁，記錄每次交易盈虧</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">Step 4</div>
+      <div class="title">生成績效報告</div>
+      <div class="desc">總回報、勝率、最大回撤、夏普比率、交易次數、模擬資金變化圖</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">Step 5</div>
+      <div class="title">分析 + 優化</div>
+      <div class="desc">睇結果 → 調整參數 → 再跑 → 直到滿意為止</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 8. WHAT WE NEED FROM MING ===== -->
+<div class="section" style="border-color: var(--orange);">
+  <h2>🤝 要 Ming 幫手嘅部分</h2>
+
+  <table>
+    <tr><th>#</th><th>你要做嘅</th><th>幾時需要</th></tr>
+    <tr>
+      <td>1</td>
+      <td><strong>諗一個交易策略</strong> — 用 CCASS 數據做買賣信號</td>
+      <td>你話事，隨時</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>俾 feedback</strong> — 睇完 Backtest 結果話俾我知：呢個方向得唔得？要改啲咩？</td>
+      <td>每次出報告之後</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>（將來）開 IB / 富途戶口</strong> — 如果有 tick data + 實盤</td>
+      <td>Phase 3 先需要</td>
+    </tr>
+  </table>
+
+  <p style="margin-top: 15px; color: var(--accent);"><strong>👆 其餘所有嘢：由 mvmv 一手包辦</strong> — 寫 code、跑測試、出報告、優化策略、自動化執行。</p>
+</div>
+
+<!-- ===== 9. NEXT STEPS ===== -->
+<div class="section" style="border-color: var(--green);">
+  <h2>🚀 即刻下一步</h2>
+
+  <p style="font-size: 1.2rem; font-weight: 600; color: var(--green);">Ming，你睇完呢份計劃書，話俾我知：</p>
+
+  <ol style="font-size: 1.1rem;">
+    <li><strong>邊個策略方向</strong>你有興趣？或者你心裡面有其他想法？</li>
+    <li><strong>有冇想改嘅地方？</strong></li>
+    <li><strong>確認之後</strong>我即刻開工寫 Backtest code + 第一份模擬報告 🚀</li>
+  </ol>
+
+  <div class="highlight" style="margin-top: 25px;">
+    <strong>📋 我等你一句：「開始！」</strong> 我就即刻寫第一條策略嘅 Backtest，用現有 CCASS 數據跑一次俾你睇結果。
+  </div>
+</div>
+
+<div class="footer">
+  由 無虛 (mvmv) 製作 · 2026-07-14 · 分享版本
+</div>
+
+</div>
+</body>
+</html>
